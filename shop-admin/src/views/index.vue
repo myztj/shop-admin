@@ -1,5 +1,5 @@
 <template>
-    
+    {{$store.state.userInfo}}
 </template>
 
 <script setup>

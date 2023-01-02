@@ -11,4 +11,13 @@ export default defineConfig({
     },
   },
   plugins: [vue(), WindiCSS()],
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://shopapi.2yuecloud.com/admin",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
 });

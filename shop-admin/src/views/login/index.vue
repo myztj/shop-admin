@@ -22,7 +22,7 @@
                     <el-input v-model="ruleForm.password" :prefix-icon="Lock" placeholder="请输入密码" />
                 </el-form-item>
                 <el-form-item>
-                    <el-button style="width: 250px;" round color="#626aef" type="primary"
+                    <el-button :loading="loading" style="width: 250px;" round color="#626aef" type="primary"
                         @click="submitForm(ruleFormRef)">
                         登录
                     </el-button>
@@ -34,26 +34,46 @@
 
 <script setup>
     import { User, Lock } from '@element-plus/icons-vue'
-    import { reactive, ref } from 'vue'
+    import { reactive, ref, onMounted, onBeforeUnmount } from 'vue'
+    import { useStore } from 'vuex'
+    import { useRouter } from "vue-router";
+    const store = useStore()
+    const router = useRouter()
     const ruleForm = reactive({
-        username: '',
-        password: ''
+        username: 'admin',
+        password: 'admin'
     })
-
+    let loading = ref(false)
     const rules = reactive({
         username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
     })
     const ruleFormRef = ref(null)
     const submitForm = () => {
-        ruleFormRef.value.validate((valid) => {
+        ruleFormRef.value.validate(async (valid) => {
             if (valid) {
-                console.log('submit!')
+                loading.value = true
+                let res = await store.dispatch('login', ruleForm)
+                if (res.token) router.push('/')
+                loading.value = false
             } else {
                 console.log('error submit!')
             }
         })
     }
+
+    const onKeyUp = (e) => {
+        console.log(e);
+        if (e.key == 'Enter') {
+            submitForm()
+        }
+    }
+    onMounted(() => {
+        document.addEventListener('keyup', onKeyUp)
+    })
+    onBeforeUnmount(() => {
+        document.removeEventListener('keyup', onKeyUp)
+    })
 </script>
 
 <style scoped>

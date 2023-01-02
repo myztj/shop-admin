@@ -9,7 +9,8 @@ import store from "./store";
 //引入element-plus
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-
+//引入全局权限
+import '@/permission'
 const app = createApp(App);
 app.use(router).use(store).use(ElementPlus);
 app.mount("#app");
