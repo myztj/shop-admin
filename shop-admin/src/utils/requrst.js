@@ -1,6 +1,5 @@
 import axios from "axios";
 import { getToken } from "../common/useCookie";
-
 const http = axios.create({
   baseURL: "/api",
   timeout: 5000,
