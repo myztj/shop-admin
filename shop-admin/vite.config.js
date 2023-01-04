@@ -14,7 +14,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://shopapi.2yuecloud.com/admin",
+        target: "http://ceshi13.dishait.cn/admin",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

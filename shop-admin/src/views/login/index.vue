@@ -19,7 +19,8 @@
                     <el-input v-model="ruleForm.username" :prefix-icon="User" placeholder="请输入用户名称" />
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input v-model="ruleForm.password" type="password" show-password :prefix-icon="Lock" placeholder="请输入密码" />
+                    <el-input v-model="ruleForm.password" type="password" show-password :prefix-icon="Lock"
+                        placeholder="请输入密码" />
                 </el-form-item>
                 <el-form-item>
                     <el-button :loading="loading" style="width: 250px;" round color="#626aef" type="primary"

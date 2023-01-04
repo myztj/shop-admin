@@ -16,8 +16,24 @@ const getUserInfoApi = ()=>{
   })
 }
 
-
+//退出登录
+const logoutApi = ()=>{
+  return request({
+    url:'/logout',
+    method:'POST',
+  })
+}
+//修改密码
+const updatepasswordApi = (data)=>{
+  return request({
+    url:'updatepassword',
+    method:'POST',
+    data
+  })
+}
 export default {
     loginApi,
-    getUserInfoApi
+    getUserInfoApi,
+    logoutApi,
+    updatepasswordApi
 }
