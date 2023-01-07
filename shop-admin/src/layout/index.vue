@@ -10,10 +10,10 @@
                 </el-aside>
                 <el-main class="bg-gray-100 h-full text">
                     <my-tags></my-tags>
-                    <router-view v-slot="{Component}">
-                        <keep-alive max="10">
-                            <component :is="Component"></component>
-                        </keep-alive>
+                    <router-view v-slot="{ Component }">
+                            <keep-alive :max="10">
+                                <component :is="Component"></component>
+                            </keep-alive>
                     </router-view>
                 </el-main>
             </el-container>
@@ -47,4 +47,5 @@
     .el-main {
         --el-main-padding: none;
     }
+
 </style>
