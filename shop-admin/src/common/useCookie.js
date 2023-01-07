@@ -1,10 +1,10 @@
 import { useCookies } from "@vueuse/integrations/useCookies";
-const TINKENKEY = "token";
-const MENUSKEY = "menus";
 const cookie = useCookies();
+const TINKENKEY = "token";
+const TABS_KEY = "tabs";
 //设置token
 const setToken = (token) => {
-  return cookie.set(TINKENKEY, token);
+   cookie.set(TINKENKEY, token);
 };
 
 //获取token
@@ -14,15 +14,15 @@ const getToken = () => {
 
 //删除token
 const removeToken = () => {
-  return cookie.remove(TINKENKEY);
+   cookie.remove(TINKENKEY);
 };
 
-//存储侧边栏信息
-const setMenus = (menus) => {
-  return cookie.set(MENUSKEY, JSON.stringify(menus));
+//存储tbs导航
+const setTabs = (tabs) => {
+   cookie.set(TABS_KEY , tabs);
 };
-//获取侧边栏信息
-const getMenus = () => {
-  return JSON.parse(cookie.set(MENUSKEY));
+//获取tbs导航
+const getTabs = () => {
+  return cookie.get(TABS_KEY);
 };
-export { setToken, getToken, removeToken, setMenus, getMenus };
+export { setToken, getToken, removeToken, setTabs, getTabs };

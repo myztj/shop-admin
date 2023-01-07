@@ -22,7 +22,7 @@
 <style scoped>
     .el-menu { 
         border-right: none !important;
-        @apply shadow-md bg-light-50 h-screen;
-
+        @apply shadow-md bg-light-50;
+        height: calc(100vh - 64px);
     }
 </style>

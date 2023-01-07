@@ -1,5 +1,5 @@
 <template>
-    <div class="cursor-pointer flex items-center justify-between h-full">
+    <div class="headerBox cursor-pointer flex items-center justify-between h-full">
         <div class="flex items-center">
             <div class="icon-left">
                 <el-icon class="no-inherit icon">
@@ -142,6 +142,6 @@
     }
 
     .icon-btn:hover {
-        @apply bg-indigo-600
+        @apply bg-indigo-600;
     }
 </style>

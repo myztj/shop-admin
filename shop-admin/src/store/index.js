@@ -52,8 +52,7 @@ const store = createStore({
     //获取用户信息
     async getUserInfo({ commit }) {
       try {
-        let response = await conservator.getUserInfoApi();
-        console.log(response);
+        let response = await conservator.getUserInfoApi()
         commit("SETUSERINFO", response);
         return response;
       } catch (error) {
