@@ -25,7 +25,7 @@
                 <el-form-item>
                     <el-button :loading="loading" style="width: 250px;" round color="#626aef" type="primary"
                         @click="submitForm(ruleFormRef)">
-                        登录
+                        {{loading?'登录中...':'登录'}}
                     </el-button>
                 </el-form-item>
             </el-form>

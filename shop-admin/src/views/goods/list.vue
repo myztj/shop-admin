@@ -1,5 +1,5 @@
 <template>
-    商品管理
+    商品管理测试
 </template>
 
 <script setup>

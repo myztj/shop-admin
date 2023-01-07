@@ -14,15 +14,19 @@ router.beforeEach(async (to, from, next) => {
     toast("请勿重复登录", "error");
     return next({ path: from.path ? from.path : "/" });
   }
+  //生命一个变量接收是否添加了新路由的状态，解决刷新页面404和白屏问题
+  let hasNewRouter = false
   //判断是否有token，如果有就获取信息，这样能保证每次刷新页面都能获取最新的用户信息
   if (token) {
     let {menus} = await store.dispatch("getUserInfo");
     if(menus && menus.length>0){
-      dynamicAdditionAddRouter(menus)
+      //这里会返回状态
+      hasNewRouter = dynamicAdditionAddRouter(menus)
     }
   }
   
   //动态设置页面title
   document.title = "积云教育 - " + (to.meta.title ? to.meta.title : "");
-  next()
+  //判断是否添加的新路由ture就to.fullPath false就放行
+  hasNewRouter ? next(to.fullPath) : next()
 });

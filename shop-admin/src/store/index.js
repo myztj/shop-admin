@@ -45,7 +45,6 @@ const store = createStore({
     //用户登录
     async login({ commit }, data) {
       let response = await conservator.loginApi(data);
-      console.log(response);
       toast("登录成功");
       commit("SETTOKEN", response.token);
       return response;
