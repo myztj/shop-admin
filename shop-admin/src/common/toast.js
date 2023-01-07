@@ -1,10 +1,11 @@
-import { ElNotification } from 'element-plus'
+import { ElNotification } from "element-plus";
 
-const toast = (message,type='success')=>{
-    ElNotification({
-        message,
-        type,
-      })
-}
+const toast = (message, type = "success") => {
+  ElNotification({
+    message,
+    type,
+    duration: 2000,
+  });
+};
 
-export default toast
+export default toast;

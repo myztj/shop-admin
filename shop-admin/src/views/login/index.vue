@@ -54,9 +54,13 @@
         ruleFormRef.value.validate(async (valid) => {
             if (valid) {
                 loading.value = true
-                let res = await store.dispatch('login', ruleForm)
-                if (res.token) router.push('/')
-                loading.value = false
+                try {
+                    let res = await store.dispatch('login', ruleForm)
+                    if (res.token) router.push('/')
+                    loading.value = false
+                } catch (error) {
+                    loading.value = false
+                }
             } else {
                 console.log('error submit!')
             }

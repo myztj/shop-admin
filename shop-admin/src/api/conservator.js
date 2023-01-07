@@ -23,6 +23,7 @@ const logoutApi = ()=>{
     method:'POST',
   })
 }
+
 //修改密码
 const updatepasswordApi = (data)=>{
   return request({
@@ -31,6 +32,7 @@ const updatepasswordApi = (data)=>{
     data
   })
 }
+
 export default {
     loginApi,
     getUserInfoApi,

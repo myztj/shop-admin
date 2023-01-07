@@ -5,12 +5,15 @@ import toast from "@/common/toast";
 import { setToken, getToken, removeToken } from "@/common/useCookie";
 import getters from "./getters";
 import app from "./modules/app";
+// import permission from "./modules/permission";
 //创建store实例
 const store = createStore({
   //保存信息
   state: {
     token: getToken() || "",
     userInfo: {},
+    menus: [],
+    ruleNames: [],
   },
   //类似计算属性有缓存
   getters,
@@ -23,27 +26,29 @@ const store = createStore({
     },
     //设置用户信息
     SETUSERINFO(state, userInfo) {
-      state.userInfo = userInfo;
+      if (userInfo) {
+        state.userInfo = userInfo;
+        const { menus, ruleNames } = userInfo;
+        state.menus = menus;
+        state.ruleNames = ruleNames;
+        localStorage.setItem("menus", JSON.stringify(menus));
+      }
     },
     //清空用户信息和token
-    REMOVECOOKIE(state) {
-      (state.token = ""), (state.userInfo = {});
-      removeToken();
+        REMOVECOOKIE(state) {
+        (state.token = ""),  (state.userInfo = {});
+         removeToken();
     },
   },
   //异步方法 dispatch 调用
   actions: {
     //用户登录
     async login({ commit }, data) {
-      try {
-        let response = await conservator.loginApi(data);
-        console.log(response);
-        toast("登录成功");
-        commit("SETTOKEN", response.token);
-        return response;
-      } catch (error) {
-        toast(error.response.data.msg, "error");
-      }
+      let response = await conservator.loginApi(data);
+      console.log(response);
+      toast("登录成功");
+      commit("SETTOKEN", response.token);
+      return response;
     },
     //获取用户信息
     async getUserInfo({ commit }) {
@@ -51,6 +56,7 @@ const store = createStore({
         let response = await conservator.getUserInfoApi();
         console.log(response);
         commit("SETUSERINFO", response);
+        return response;
       } catch (error) {
         console.log(error);
       }
@@ -59,6 +65,7 @@ const store = createStore({
   //vuex模块化
   modules: {
     app,
+    // permission,
   },
 });
 

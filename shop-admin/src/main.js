@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 //引入全局加载进度条css
-import 'nprogress/nprogress.css'
+import "nprogress/nprogress.css";
 //引入router挂载全局
 import router from "./router";
 //全局引入windicss
