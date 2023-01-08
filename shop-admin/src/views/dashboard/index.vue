@@ -12,10 +12,9 @@
          </el-col>
          <el-col :span="12" :offset="0">
           <IndexCard :cardData="goodsList" title="店铺及商品提示" tagTitle="店铺及商品提示"></IndexCard>
-          <IndexCard :cardData="orderList" title="交易提示" tagTitle="需要立即处理的交易订单"></IndexCard>
+          <IndexCard :cardData="orderList" title="交易提示" tagTitle="店铺及商品提示"></IndexCard>
          </el-col>
         </el-row>
-        
     </div>
 </template>
 

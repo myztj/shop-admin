@@ -5,11 +5,11 @@
                 <my-header></my-header>
             </el-header>
             <el-container>
-                <el-aside :width="isOpenMone?'64px':'250px'" class="duration-700">
+                <el-aside :width="isOpenMone?'64px':'250px'" class="aside">
                     <my-aside></my-aside>
                 </el-aside>
-                <el-main class="bg-gray-100 h-full text">
-                    <my-tags></my-tags>
+                <el-main :class="{isunfold:isOpenMone}">
+                    <my-tags class="tags"></my-tags>
                     <router-view v-slot="{ Component }">
                             <keep-alive :max="10">
                                 <component :is="Component"></component>
@@ -38,14 +38,40 @@
 <style scoped>
     .header {
         @apply bg-indigo-700 text-light-50 h-[64px];
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        overflow: hidden;
     }
 
     .aside {
         @apply h-full;
+        position: fixed;
+        top: 64px;
+        bottom: 0;
+        z-index: 100;
     }
 
     .el-main {
         --el-main-padding: none;
+        @apply bg-gray-100;
+        position: absolute;
+        top: 104px;
+        left: 250px;
+        right: 0;
+        bottom: 0;
     }
 
+    .isunfold{
+        left: 64px !important;
+    }
+    .tags{
+        position: fixed;
+        top: 64px;
+        left: 250px;
+        right: 0;
+        z-index: 100;
+        background-color: #f3f4f6;
+    }
 </style>

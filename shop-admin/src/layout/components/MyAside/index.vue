@@ -1,5 +1,5 @@
 <template>
-    <el-menu :default-active="activePath" class="el-menu-vertical-demo" router unique-opened :collapse="isCollapse">
+    <el-menu :collapse-transition="false" :default-active="activePath" class="el-menu-vertical-demo" router unique-opened :collapse="isCollapse">
         <aside-item v-for="(item,index) in menuList" :key="index" :item="item"></aside-item>
     </el-menu>
 </template>
@@ -23,6 +23,7 @@
     .el-menu { 
         border-right: none !important;
         @apply shadow-md bg-light-50;
-        height: calc(100vh - 64px);
+        /* height: calc(100vh - 64px); */
+        height: 100%;
     }
 </style>
