@@ -11,7 +11,7 @@
                 </span>
             </div>
         </template>
-        <div id="chart" style="width: 100%; height: 300px;"></div>
+        <div ref="el" id="chart" style="width: 100%; height: 300px;"></div>
     </el-card>
 
 </template>
@@ -20,6 +20,7 @@
     import * as echarts from 'echarts';
     import statistics from "@/api/statistics"
     import { ref, onMounted ,onBeforeUnmount} from 'vue'
+    import { useResizeObserver } from '@vueuse/core'
     const ischecked = ref('week')
     const options = [
         {
@@ -35,6 +36,7 @@
             type: 'hour'
         }
     ]
+    //图表数据切换
     const handerOnclick = (type) => {
         ischecked.value = type
         drawChart()
@@ -60,7 +62,9 @@
                 }
             ]
         };
+        //开启图表loading
         myChart.showLoading();
+        //在掉哟经图表时调用数据接口，直接赋值
         statistics.gteStatisticsApi3({ type: ischecked.value }).then(res => {
             console.log(res);
             option.xAxis.data = res.x
@@ -68,6 +72,7 @@
                     // 绘制图表
             myChart.setOption(option);
         }).finally(()=>{
+             //关闭图表loading
             myChart.hideLoading();
         })
     }
@@ -78,6 +83,19 @@
     drawChart()
     })
 
+
+    //做一些优化,兼容打包后刷新白屏的情况，页面销毁前销毁图标示例。
+    onBeforeUnmount(()=>{
+        if(myChart) echarts.dispose(myChart)
+    })
+
+    //1.监听图表跟随容器大小变化而变化，这里使用了vueuse提供的useResizeObserver方法，可以监听某一个dom大小的变化
+    const el = ref(null)
+    useResizeObserver(el, () => myChart.resize())
+
+     //2.也可以使用原生提供的监听屏幕大小变化发生时调用myChart.resize()注：（myChart.resize()是echarts官方提供的方法）
+    // const onResize=()=>myChart.resize()
+    // window.addEventListener('resize',onResize)
 </script>
 
 <style scoped>
