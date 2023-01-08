@@ -62,5 +62,7 @@
 </script>
 
 <style scoped>
-
+:deep(.el-card){
+    border: none;
+}
 </style>

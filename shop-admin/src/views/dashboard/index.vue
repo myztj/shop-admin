@@ -10,7 +10,10 @@
          <el-col :span="12" :offset="0">
           <IndexChart></IndexChart>
          </el-col>
-         <el-col :span="12" :offset="0"></el-col>
+         <el-col :span="12" :offset="0">
+          <IndexCard :cardData="goodsList" title="店铺及商品提示" tagTitle="店铺及商品提示"></IndexCard>
+          <IndexCard :cardData="orderList" title="交易提示" tagTitle="需要立即处理的交易订单"></IndexCard>
+         </el-col>
         </el-row>
         
     </div>
@@ -18,12 +21,15 @@
 
 <script setup>
     import IndexChart from "./components/IndexChart.vue"
+    import IndexCard from "./components/IndexCard.vue"
     import IndexNav from './components/IndexNav.vue'
     import ZCard from './components/ZCard.vue'
     import statistics from "@/api/statistics"
     import {ref} from 'vue'
     const statisticsList1 = ref([])
-    const statisticsList2 = ref([])
+   //  const statisticsList2 = ref({})
+    const goodsList = ref([])
+    const orderList = ref([])
     //获取后台数据1
     const gteStatistics1 = async ()=>{
          try {
@@ -40,7 +46,9 @@
          try {
             let res = await statistics.gteStatisticsApi2()
             console.log(res);
-            statisticsList2.value = res
+            let {goods,order} = res
+            goodsList.value = goods
+            orderList.value = order
          } catch (error) {
             console.log(error);
          }

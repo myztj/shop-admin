@@ -1,5 +1,5 @@
 <template>
-    <el-card shadow="never" :body-style="{ padding: '20px' }">
+    <el-card shadow="never">
         <template #header>
             <div class="flex justify-between">
                 <span class="text-sm">订单统计</span>
@@ -99,5 +99,7 @@
 </script>
 
 <style scoped>
-
+:deep(.el-card){
+    border: none !important;
+}
 </style>
