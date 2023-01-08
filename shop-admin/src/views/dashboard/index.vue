@@ -1,19 +1,29 @@
 <template>
     <div class="p-5">
+      <!-- 订单组件 -->
        <ZCard :statisticsList1="statisticsList1"/>
+      <!-- nav导航 -->
+       <IndexNav/>
 
-       <IndexNav :navList="statisticsList2"/>
+       <!-- 图标和交易 -->
+        <el-row :gutter="20" class="mt-5">
+         <el-col :span="12" :offset="0">
+          <IndexChart></IndexChart>
+         </el-col>
+         <el-col :span="12" :offset="0"></el-col>
+        </el-row>
+        
     </div>
 </template>
 
 <script setup>
+    import IndexChart from "./components/IndexChart.vue"
     import IndexNav from './components/IndexNav.vue'
     import ZCard from './components/ZCard.vue'
     import statistics from "@/api/statistics"
     import {ref} from 'vue'
     const statisticsList1 = ref([])
     const statisticsList2 = ref([])
-    const statisticsList3 = ref([])
     //获取后台数据1
     const gteStatistics1 = async ()=>{
          try {
@@ -37,16 +47,6 @@
     }
     gteStatistics2()
 
-    const gteStatistics3 = async ()=>{
-         try {
-            let res = await statistics.gteStatisticsApi3()
-            console.log(res);
-            statisticsList3.value = res
-         } catch (error) {
-            console.log(error);
-         }
-    }
-    gteStatistics3()
 </script>
 
 <style scoped>

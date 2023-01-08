@@ -14,10 +14,11 @@ const gteStatisticsApi2 = ()=>{
     })
 }
 
-const gteStatisticsApi3 = ()=>{
+const gteStatisticsApi3 = (data)=>{
     return request({
         url:'/statistics3',
-        method:'GET'
+        method:'GET',
+        data
     })
 }
 
