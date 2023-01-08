@@ -1,73 +1,53 @@
 <template>
     <div class="common-layout">
         <el-container class="bg-light-50" :style="`height: ${calculateHeight}px`">
-          <el-header class="iamge-header">Header</el-header>
-          <el-container>
-            <el-aside width="220px" class="image-aside">
-                <div class="top">
-                    <div v-for="i in 100" :key="i">{{i}}</div>
+            <el-header class="iamge-header">
+                <div>
+                    <el-button type="primary" size="small" @click="addImageClass">新增图片分类</el-button>
+                    <el-button type="warning" size="small">上传图片</el-button>
                 </div>
-                <div class="bottom">456</div>
-            </el-aside>
-            <el-main class="image-main">
-                <div class="top">
-                    <div v-for="i in 100" :key="i">{{i}}</div>
-                </div>
-                <div class="bottom">456</div>
-            </el-main>
-          </el-container>
+            </el-header>
+            <el-container>
+                <ImageAside />
+                <ImageMain/>
+            </el-container>
         </el-container>
-      </div>
+    </div>
+    <!-- 抽屉组件 -->
+   <z-drawer ref="drawer" @cancel="cancel" @onSubmit="onSubmit"></z-drawer>
 </template>
 
 <script setup>
+    import ZDrawer from '@/components/ZDrawer.vue'
+    import ImageAside from '@/components/ImageAside.vue'
+    import ImageMain from '@/components/ImageMain.vue'
+    import {ref} from 'vue'
     //获取页面的总高度如果获取不到就获取body的高度
-  let windowHeight = window.innerHeight || document.body.innerHeight
-  //计算高度
-  let calculateHeight = windowHeight - 64 - 40 -40
+    let windowHeight = window.innerHeight || document.body.innerHeight
+    //计算高度
+    let calculateHeight = windowHeight - 64 - 40 - 40
+    //获取抽屉实例
+    const drawer = ref(null)
+    const addImageClass = ()=>{
+        drawer.value.open()
+    }
+
+    const cancel = ()=>{
+        drawer.value.close()
+    }
+
+    const onSubmit = ()=>{
+        console.log('提交');
+    }
 </script>
 
 <style lang="scss" scoped>
-.iamge-header{
-    @apply flex items-center rounded;
-    border-bottom: 1px solid #eee;
-}
-.image-main{
-    position: relative;
-    .top{
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom:50px;
-        overflow: auto;
+    .iamge-header {
+        @apply flex items-center rounded;
+        border-bottom: 1px solid #eee;
     }
-    .bottom{
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 50px;
-        @apply flex items-center justify-center;
-    }
-}
-.image-aside{
-    position: relative;
-    .top{
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom:50px;
-        overflow: auto;
-    }
-    .bottom{
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 50px;
-        @apply flex items-center justify-center;
-    }
-}
+
+   
+
+  
 </style>
