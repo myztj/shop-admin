@@ -9,7 +9,7 @@
                     <my-aside></my-aside>
                 </el-aside>
                 <el-main :class="{isunfold:isOpenMone}">
-                    <my-tags class="tags"></my-tags>
+                    <my-tags class="tags" :class="{isunfold:isOpenMone}"></my-tags>
                     <router-view v-slot="{ Component }">
                             <keep-alive :max="10">
                                 <component :is="Component"></component>
@@ -61,6 +61,7 @@
         left: 250px;
         right: 0;
         bottom: 0;
+        padding: 20px;
     }
 
     .isunfold{

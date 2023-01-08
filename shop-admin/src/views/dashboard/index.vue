@@ -1,5 +1,5 @@
 <template>
-    <div class="p-5">
+    <div>
       <!-- 订单组件 -->
        <ZCard :statisticsList1="statisticsList1"/>
       <!-- nav导航 -->
