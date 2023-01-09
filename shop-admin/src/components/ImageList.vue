@@ -1,5 +1,5 @@
 <template>
-    <div class="box" :class="{'active':active}" @click.stop="handerOnclick">
+    <div class="box" :class="{'active':active}" @click="handerOnclick">
         <span class="text-gray-600 text-sm">
             <slot></slot>
         </span>
@@ -8,7 +8,8 @@
                 <Edit />
             </el-icon>
         </el-button>
-        <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" icon-color="#626AEF"
+        <span @click.stop="()=>{}">
+            <el-popconfirm confirm-button-text="确定" cancel-button-text="取消" icon-color="#626AEF"
             title="是否要删除?" @confirm="confirmEvent">
             <template #reference>
                 <el-button text type="primary" class="btn">
@@ -18,6 +19,7 @@
                 </el-button>
             </template>
         </el-popconfirm>
+        </span>
     </div>
 </template>
 

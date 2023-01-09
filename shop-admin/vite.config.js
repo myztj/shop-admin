@@ -14,7 +14,7 @@ export default defineConfig({
     vue(), 
     WindiCSS()
 ],
-// http://ceshi13.dishait.cn/admin
+// http://ceshi13.dishait.cn/admin  
   server: {
     proxy: {
       "/api": {
