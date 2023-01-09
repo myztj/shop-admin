@@ -25,4 +25,8 @@ const setTabs = (tabs) => {
 const getTabs = () => {
   return cookie.get(TABS_KEY);
 };
-export { setToken, getToken, removeToken, setTabs, getTabs };
+
+const removeTabs = ()=>{
+   cookie.remove(TABS_KEY);
+}
+export { setToken, getToken, removeToken, setTabs, getTabs,removeTabs };

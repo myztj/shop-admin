@@ -2,11 +2,11 @@ import axios from "axios";
 //引入加载条
 import nprogress from "nprogress";
 import { getToken } from "../common/useCookie";
-import toast from "@/common/toast"
+import {toast} from "@/common/promptComponent"
 import store from "../store";
 const http = axios.create({
   baseURL: "/api",
-  timeout: 5000,
+  timeout: 10000,
 });
 //请求拦截器
 http.interceptors.request.use(

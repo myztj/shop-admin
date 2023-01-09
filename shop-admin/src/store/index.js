@@ -1,8 +1,8 @@
 //创建vuex引入创建方法
 import { createStore } from "vuex";
 import conservator from "@/api/conservator";
-import toast from "@/common/toast";
-import { setToken, getToken, removeToken } from "@/common/useCookie";
+import {toast} from "@/common/promptComponent";
+import { setToken, getToken, removeToken , setTabs, getTabs,removeTabs} from "@/common/useCookie";
 import getters from "./getters";
 import app from "./modules/app";
 // import permission from "./modules/permission";
@@ -12,7 +12,7 @@ const store = createStore({
   state: {
     token: getToken() || "",
     userInfo: {},
-    menus: [],
+    menus: getTabs() || [],
     ruleNames: [],
   },
   //类似计算属性有缓存
@@ -31,13 +31,14 @@ const store = createStore({
         const { menus, ruleNames } = userInfo;
         state.menus = menus;
         state.ruleNames = ruleNames;
-        localStorage.setItem("menus", JSON.stringify(menus));
+        setTabs(menus)
       }
     },
     //清空用户信息和token
         REMOVECOOKIE(state) {
         (state.token = ""),  (state.userInfo = {});
          removeToken();
+         removeTabs()
     },
   },
   //异步方法 dispatch 调用

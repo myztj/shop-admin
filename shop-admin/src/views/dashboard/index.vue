@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="box">
       <!-- 订单组件 -->
        <ZCard :statisticsList1="statisticsList1"/>
       <!-- nav导航 -->
@@ -57,5 +57,5 @@
 </script>
 
 <style scoped>
-
+   
 </style>

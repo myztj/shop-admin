@@ -1,11 +1,16 @@
 <template>
-    <el-drawer class="drawer" :close-on-click-modal="false" v-model="isDrawerShow" :destroy-on-close="destroyOnClose" :title="title" direction="rtl"
+    <el-drawer append-to-body 
+    class="drawer" 
+    :close-on-click-modal="closeOnClickModal" 
+    v-model="isDrawerShow" 
+    :destroy-on-close="destroyOnClose" 
+    :title="title" direction="rtl"
         :size="size">
         <div class="demo-drawer__content">
             <div class="demo-drawer__body">
                 <slot></slot>
             </div>
-            <div class="demo-drawer__footer">
+            <div class="demo-drawer__footer" v-if="btn">
                 <el-button type="primary" :loading="loading" @click="onSubmit">{{
                     conifrmText
                     }}</el-button>
@@ -37,6 +42,16 @@
         },
         //关闭drawer时是否销毁子元素
         destroyOnClose:{
+            type:Boolean,
+            default:false
+        },
+        //是否显示按钮
+        btn:{
+           type:Boolean,
+           default:true
+        },
+        //点击其他地方是否可以关闭抽屉
+        closeOnClickModal:{
             type:Boolean,
             default:false
         }

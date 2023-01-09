@@ -1,7 +1,7 @@
 import conservator from "@/api/conservator"
 import { ref, reactive } from 'vue'
 import { useStore } from "vuex"
-import toast from '@/common/toast'
+import {toast} from '@/common/promptComponent'
 import { useRouter } from "vue-router";
 export  function useRepassword() {
     const store = useStore()

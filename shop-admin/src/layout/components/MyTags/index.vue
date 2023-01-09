@@ -26,7 +26,7 @@
 </template>
 <script setup>
     //组件相关的逻辑封装，抽离在useTabsList.js中（vue3 setup语法糖提供的一种写法），方便后期维护！！
-    import { useTabsList } from'@/common/useTabsList.js'
+    import { useTabsList } from'./useTabsList.js'
     //执行这个函数 把相关的数据个方法结构出来就可以了
     const {activeTba, tbasList, handlerTabChange, removeTab, handleCommand} = useTabsList()
 </script>

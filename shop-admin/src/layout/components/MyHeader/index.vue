@@ -68,11 +68,11 @@
     import screenfull from "screenfull"
     import { computed, ref, reactive } from 'vue'
     import { useStore } from "vuex"
-    import toast from '@/common/toast'
+    import {toast} from '@/common/promptComponent'
     import { useRouter } from "vue-router";
     import { ElMessageBox } from 'element-plus'
     //引入退出登录和修改密码，参数和逻辑方法（封装在common/useMyheader.js中方便后期维护）
-    import {useRepassword} from "@/common/useMyheader"
+    import {useRepassword} from "./useMyheader"
     //调用此方法
     const {form,rules,reference,onSubmit,openDrawer,refDrawer,closeDrawer,logout,cancel,loading} = useRepassword()
     // const reload = ()=>{location.reload()}//此方法也可以实现页面刷新，需要定义方法，如果只是一个刷新推荐在页面使用$router.go(0)
