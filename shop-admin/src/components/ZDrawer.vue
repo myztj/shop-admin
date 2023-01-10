@@ -5,6 +5,7 @@
     v-model="isDrawerShow" 
     :destroy-on-close="destroyOnClose" 
     :title="title" direction="rtl"
+    @close="handelClose"
         :size="size">
         <div class="demo-drawer__content">
             <div class="demo-drawer__body">
@@ -14,7 +15,7 @@
                 <el-button type="primary" :loading="loading" @click="onSubmit">{{
                     conifrmText
                     }}</el-button>
-                <el-button @click="cancel">取消</el-button>
+                <el-button @click.stop="cancel">取消</el-button>
             </div>
         </div>
     </el-drawer>
@@ -63,11 +64,13 @@
      //关闭
     const close = () => isDrawerShow.value = false
     //把事件暴露给父组件
-    const emit = defineEmits(['onSubmit','cancel'])
+    const emit = defineEmits(['onSubmit','cancel','handelClose'])
     //提交事件
     const onSubmit = ()=> emit('onSubmit')
     //取消事件
     const cancel = ()=>emit('cancel')
+    //抽屉关闭的回调
+    const handelClose = ()=> emit('handelClose')
     defineExpose({
         open,
         close

@@ -4,20 +4,19 @@
             <!-- <div v-for="(item,index) in imageList " :key="index">{{item.url}}</div> -->
             <el-row :gutter="20" class="rowBox">
                 <el-col :span="6" class="mb-2" :offset="0" v-for="(item,index) in imageList " :key="index">
-                    <el-card shadow="hover" class="rounded relative">
+                    <el-card shadow="hover" class="rounded bt relative" :class="{'activeBoder':item.chcked}">
                         <el-image :preview-src-list="[item.url]" :initial-index="0" :src="item.url" fit="cover"
-                            class="w-full h-[150px]"></el-image>
+                            class="w-full h-[150px] elImg"></el-image>
                         <div class="image-title">{{item.name}}</div>
                         <div class='flex items-center justify-center p-2'>
+                            <el-checkbox v-if="showChckbox" @change="handelchange(item)" v-model="item.chcked" class="pr-2"/>
                             <el-button type="primary" size="small" text @click="imageRen(item)">重命名</el-button>
-
                             <el-popconfirm width="171px" confirm-button-text="确定" cancel-button-text="取消"
                                 icon-color="#ff9900" title="是否要删除该图片？" @confirm="deletImage(item)">
                                 <template #reference>
                                     <el-button type="primary" size="small" text>删除</el-button>
                                 </template>
                             </el-popconfirm>
-
                         </div>
                     </el-card>
 
@@ -38,8 +37,14 @@
     import ZDrawer from '@/components/ZDrawer.vue'
     import ImageListApi from "@/api/image_manage"
     import { msgBox, toast } from '@/common/promptComponent'
-    import { ref } from 'vue'
+    import { ref ,computed} from 'vue'
     import ImageApi from '@/api/image_class'
+    const props = defineProps({
+        showChckbox:{
+            type:Boolean,
+            default:false
+        }
+    })
     //分页总条数
     const total = ref(0)
     //分页页码
@@ -67,8 +72,10 @@
         try {
             let res = await ImageApi.appointImageListApi(listClassId.value, page.value, limit.value)
             total.value = res.totalCount
-            imageList.value = res.list
-            console.log(res);
+            imageList.value = res.list.map(o=>{
+                o.chcked = false
+                return o
+            })
         } catch (error) {
             console.log(error);
         }
@@ -95,6 +102,15 @@
         } catch (error) {
             console.log(error);
         }
+    }
+    //选者图片
+    let hasImage = computed(()=>imageList.value.filter(item=>item.chcked))
+    console.log(hasImage);
+    const handelchange = (item)=>{
+          if (hasImage.value.length>1) {
+            imageList.value.map(item=>item.chcked=false)
+            item.chcked = true
+          }
     }
      const uploadSuccess = ()=>{
         appointImageLis(1)
@@ -145,8 +161,18 @@
     .image-title {
         @apply p-1 bg-opacity-50 text-gray-100 text-sm truncate bg-gray-900;
         position: absolute;
-        bottom: 45px;
+        bottom: 40px;
         left: 0;
         right: 0;
+    }
+    .elImg{
+        vertical-align: middle;
+    }
+    .bt{
+        border: 1px solid transparent !important;
+    }
+    .activeBoder{
+        box-sizing: border-box;
+        border:1px solid blue !important;
     }
 </style>

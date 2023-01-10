@@ -17,6 +17,7 @@ export  function useTabsList() {
   });
   //添加tabs事件
   const addTab = (targetName) => {
+    //路由切换侧边栏也跟着切换
     activeTba.value = targetName.path;
     let isexist =
       tbasList.value.findIndex((i) => i.path == targetName.path) == -1;
