@@ -11,7 +11,7 @@
                         </el-form>
                         <span>
                             <el-button type="primary" size="small" @click="search">搜索</el-button>
-                            <el-button size="small" @click="reset">重置</el-button>
+                            <el-button size="small" @click="resetSearchForm">重置</el-button>
                         </span>
                     </div>
                     <div class="flex items-center justify-between">
@@ -112,10 +112,13 @@
         total, 
         tableData, 
         limit, 
-        reset, 
+        resetSearchForm, 
         getAnagementList 
     } = useInitTable({
-        //传入一个对象，第一个参数是获取数据的地址，第二个是一个回调，可以接收成功后的数据
+        //传入一个对象，第一个参数搜索栏需要的参数，第二个参数是获取数据的地址，第三个是一个回调，可以接收成功后的数据
+        searchForm:{
+            keyword:''
+        },
         getListApi:anagementApi.getManagerListApi,
         getListSuccess:(res)=>{
             tableData.value = res.list.map(item =>{
