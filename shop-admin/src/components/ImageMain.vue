@@ -103,14 +103,17 @@
             console.log(error);
         }
     }
+    const emit = defineEmits(['checkedImgae'])
     //选者图片
     let hasImage = computed(()=>imageList.value.filter(item=>item.chcked))
-    console.log(hasImage);
     const handelchange = (item)=>{
-          if (hasImage.value.length>1) {
-            imageList.value.map(item=>item.chcked=false)
-            item.chcked = true
+          if (item.chcked && hasImage.value.length>1) {
+            //如果不想要提示可以选者把所有的改为false，当前的改为true就会实现自动实现点击另一个其他取消选中
+            // imageList.value.map(item=>item.chcked=false)
+            item.chcked = false
+            return toast('最多只能选者一张','error')
           }
+          emit('checkedImgae',hasImage.value)
     }
      const uploadSuccess = ()=>{
         appointImageLis(1)

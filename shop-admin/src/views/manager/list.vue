@@ -17,7 +17,7 @@
                     <div class="flex items-center justify-between">
                         <el-button type="primary" size="small" @click="addManager">新增</el-button>
                         <el-tooltip class="box-item" effect="dark" content="刷新列表" placement="top">
-                            <el-button text>
+                            <el-button text @click="refreshList">
                                 <el-icon size="15">
                                     <Refresh />
                                 </el-icon>
@@ -80,7 +80,7 @@
                     <el-input v-model="ruleForm.password" />
                 </el-form-item>
                 <el-form-item label="选者头像" prop="avatar">
-                    <image-dialog></image-dialog>
+                    <image-dialog v-model="ruleForm.avatar"></image-dialog>
                 </el-form-item>
                 <el-form-item label="所属管理员" prop="role_id">
                     <el-select v-model="ruleForm.role_id" placeholder="请输入所属管理员">
@@ -101,9 +101,30 @@
     import { toast } from '@/common/promptComponent'
     import ZDrawer from '@/components/ZDrawer.vue'
     import anagementApi from '@/api/admin_anagement'
-    import { reactive, ref ,computed} from 'vue'
-    const searchForm = reactive({
-        keyword: ''
+    import { reactive, ref, computed } from 'vue'
+    //利用vue3组合API的特性粉装一个分页搜索的共用函数
+    import { useInitTable } from '@/common/useCommon'
+    const rolesList = ref([])
+    const loading = ref(false)
+    const { 
+        searchForm, 
+        page, 
+        total, 
+        tableData, 
+        limit, 
+        reset, 
+        getAnagementList 
+    } = useInitTable({
+        //传入一个对象，第一个参数是获取数据的地址，第二个是一个回调，可以接收成功后的数据
+        getListApi:anagementApi.getManagerListApi,
+        getListSuccess:(res)=>{
+            tableData.value = res.list.map(item =>{
+                item.statusLoading = false
+                return item
+            })
+            rolesList.value = res.roles
+            total.value = res.totalCount
+        }
     })
     let ruleForm = reactive({
         username: '',
@@ -113,53 +134,49 @@
         avatar: '',
     })
     const rules = reactive({
-        username: [{ required: true, message: 'Please input Activity name', trigger: 'blur' },],
-        password: [{ required: true, message: 'Please input Activity name', trigger: 'blur' },],
-        role_id: [{ required: true, message: 'Please input Activity name', trigger: 'blur' },],
+        username: [{ required: true, message: '请输入用户名', trigger: 'blur' },],
         status: [{ required: true, message: 'Please input Activity name', trigger: 'blur' },],
-        avatar: [{ required: true, message: 'Please input Activity name', trigger: 'blur' },]
     })
     const swLoading = ref(false)
-    const limit = ref(10)
-    const page = ref(1)
-    const total = ref(0)
-    const tableData = ref([])
-    const rolesList = ref([])
     const drawerRef = ref(null)
     const editId = ref(0)
     const title = computed(() => editId.value ? '编辑' : '新增')
-    const loading = ref(false)
-    const getAnagementList = async (p) => {
-        if (typeof p == 'number') page.value = p
-        try {
-            let res = await anagementApi.getManagerListApi(page.value, { limit: limit.vlaue, keyword: searchForm.keyword })
-            console.log(res);
-            tableData.value = res.list
-            rolesList.value = res.roles
-            tableData.value.map(item => item.statusLoading = false)
-            console.log(tableData.value);
-            total.value = res.totalCount
-        } catch (error) {
-            console.log(error);
-        }
-    }
     getAnagementList()
     //搜索
     const search = () => {
         getAnagementList()
     }
-    //重置
-    const reset = () => {
-        searchForm.keyword = ''
-        getAnagementList()
-    }
     //新增
     const addManager = () => {
+        editId.value = 0
         drawerRef.value.open()
     }
+    //刷新
+    const refreshList = () => {
+        tableData.value = []
+        getAnagementList()
+    }
     //抽屉提交
+    const ruleFormRef = ref(null)
     const onSubmit = () => {
-
+        loading.value = true
+        ruleFormRef.value.validate(valid => {
+            if (!valid) returna
+            try {
+                let func = editId.value ? anagementApi.amendManagerApi(editId.value, ruleForm) : anagementApi.addAanagerApi(ruleForm)
+            func.then(res => {
+                console.log(res);
+                toast(title.value + '成功')
+                cancel()
+                getAnagementList()
+                loading.value = false
+            }) 
+            } catch (error) {
+                loading.value = false
+                console.log(error);
+            }
+        })
+        console.log(ruleForm);
     }
     //抽屉取消
     const cancel = () => {
@@ -170,7 +187,7 @@
         row.statusLoading = true
         // row.status= status
         try {
-            let res = await anagementApi.amendManagerApi(row.id, { status })
+            let res = await anagementApi.amendManagerStatusApi(row.id, { status })
             console.log(res);
             toast('状态修改成功')
             getAnagementList()
@@ -184,29 +201,29 @@
     //修改
     const amend = (row) => {
         editId.value = row.id
-        console.log(row);
+        ruleForm.username = row.username
+        ruleForm.role_id = row.role_id
+        ruleForm.status = row.status
+        ruleForm.avatar = row.avatar
         drawerRef.value.open()
     }
     //删除
     const confirmRemove = async (row) => {
-          try {
+        try {
             let res = await anagementApi.removeManagerApi(row.id)
             toast('删除成功')
             getAnagementList()
-          } catch (error) {
+        } catch (error) {
             console.log(error);
-          }
-    }
-
-    //关闭抽屉的回调清空form表单
-    const handelClose = () => {
-        ruleForm = {
-            username: '',
-            password: '',
-            role_id: null,
-            status: 1,
-            avatar: '',
         }
+    }
+    const handelClose = () => {
+        console.log('关闭了');
+        ruleForm.username = ''
+        ruleForm.role_id = null
+        ruleForm.status = 1
+        ruleForm.avatar = ''
+        ruleForm.password = ''
     }
 </script>
 

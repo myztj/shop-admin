@@ -21,7 +21,7 @@ const addAanagerApi = (data)=>{
 //修改管理员
 const amendManagerApi = (id,data)=>{
     return request({
-        url:`/manager/${id}/update_status`,
+        url:`/manager/${id}`,
         method:'POST',
         data
     })
