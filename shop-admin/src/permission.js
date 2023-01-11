@@ -20,16 +20,19 @@ router.beforeEach(async (to, from, next) => {
   let hasNewRouter = false;
   //判断是否有token，如果有就获取信息，这样能保证每次刷新页面都能获取最新的用户信息
   if (token && !hasGetInfo) {
-    
     let { menus } = await store.dispatch("getUserInfo");
-    //获取成功后变成true
-    hasGetInfo = true;
+     //获取成功后变成true
+      hasGetInfo = true;
     if (menus && menus.length > 0) {
       //这里会返回状态
       hasNewRouter = dynamicAdditionAddRouter(menus);
     }
   }
-
+  /*解决多次调用获取用户信息，退出登录后侧边栏不显示的问题，
+    是因为退出登录后路由守卫别调用hasGetInfo初始值在外部一直是所以一直是false*/
+   if(to.path=='/login'){
+    hasGetInfo = false
+   }
   //动态设置页面title
   document.title = "积云教育 - " + (to.meta.title ? to.meta.title : "");
   //判断是否添加的新路由ture就to.fullPath false就放行

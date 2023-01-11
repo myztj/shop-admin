@@ -21,7 +21,7 @@ export function dynamicAdditionAddRouter(menus) {
         };
         //判断是否还有child
         if (c.child && c.child.length > 0) {
-          //调用递归
+          //递归
           processRoutingList(c.child);
         }
         //这里在添加时一定要查询是否存在该路由再添加！
@@ -33,7 +33,7 @@ export function dynamicAdditionAddRouter(menus) {
       });
     });
   };
-  //递归
+  //调用
   processRoutingList(menus);
   //抛出去
   return hasNewRouter;

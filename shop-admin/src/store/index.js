@@ -1,8 +1,15 @@
 //创建vuex引入创建方法
 import { createStore } from "vuex";
 import conservator from "@/api/conservator";
-import {toast} from "@/common/promptComponent";
-import { setToken, getToken, removeToken , setTabs, getTabs,removeTabs} from "@/common/useCookie";
+import { toast } from "@/common/promptComponent";
+import {
+  setToken,
+  getToken,
+  removeToken,
+  setTabs,
+  getTabs,
+  removeTabs,
+} from "@/common/useCookie";
 import getters from "./getters";
 import app from "./modules/app";
 // import permission from "./modules/permission";
@@ -31,14 +38,14 @@ const store = createStore({
         const { menus, ruleNames } = userInfo;
         state.menus = menus;
         state.ruleNames = ruleNames;
-        setTabs(menus)
+        setTabs(menus);
       }
     },
     //清空用户信息和token
-        REMOVECOOKIE(state) {
-        (state.token = ""),  (state.userInfo = {});
-         removeToken();
-         removeTabs()
+    REMOVECOOKIE(state) {
+      (state.token = ""), (state.userInfo = {});
+      removeToken();
+      removeTabs();
     },
   },
   //异步方法 dispatch 调用
@@ -53,7 +60,7 @@ const store = createStore({
     //获取用户信息
     async getUserInfo({ commit }) {
       try {
-        let response = await conservator.getUserInfoApi()
+        let response = await conservator.getUserInfoApi();
         commit("SETUSERINFO", response);
         return response;
       } catch (error) {
