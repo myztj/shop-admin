@@ -1,16 +1,20 @@
 <template>
     <div class="box">
       <!-- 订单组件 -->
-       <ZCard :statisticsList1="statisticsList1"/>
+      <!-- 要使用自定义权限时，如果组件有传值的数据，直接使用指令不生效，回报警告，需要在外层套一层div 不要使用template不生效 -->
+      <div v-permission="['getStatistics1,GET']">
+         <ZCard :statisticsList1="statisticsList1"/>
+      </div>
+    
       <!-- nav导航 -->
        <IndexNav/>
 
        <!-- 图标和交易 -->
         <el-row :gutter="20" class="mt-5">
          <el-col :span="12" :offset="0">
-          <IndexChart></IndexChart>
+          <IndexChart v-permission="['getStatistics3,GET']"></IndexChart>
          </el-col>
-         <el-col :span="12" :offset="0">
+         <el-col :span="12" :offset="0" v-permission="['getStatistics2,GET']">
           <IndexCard :cardData="goodsList" title="店铺及商品提示" tagTitle="店铺及商品提示"></IndexCard>
           <IndexCard :cardData="orderList" title="交易提示" tagTitle="店铺及商品提示"></IndexCard>
          </el-col>

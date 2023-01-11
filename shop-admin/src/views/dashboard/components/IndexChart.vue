@@ -19,7 +19,7 @@
 <script setup>
     import * as echarts from 'echarts';
     import statistics from "@/api/statistics"
-    import { ref, onMounted ,onBeforeUnmount} from 'vue'
+    import { ref, onMounted, onBeforeUnmount } from 'vue'
     import { useResizeObserver } from '@vueuse/core'
     const ischecked = ref('week')
     const options = [
@@ -66,27 +66,29 @@
         myChart.showLoading();
         //在掉哟经图表时调用数据接口，直接赋值
         statistics.gteStatisticsApi3({ type: ischecked.value }).then(res => {
-            console.log(res);
             option.xAxis.data = res.x
             option.series[0].data = res.y
-                    // 绘制图表
+            // 绘制图表
             myChart.setOption(option);
-        }).finally(()=>{
-             //关闭图表loading
+        }).finally(() => {
+            //关闭图表loading
             myChart.hideLoading();
         })
     }
     var myChart = null
     onMounted(() => {
-    // 基于准备好的dom，初始化echarts实例
-    myChart = echarts.init(document.getElementById('chart'));
-    drawChart()
+        // 基于准备好的dom，初始化echarts实例
+        var getDom = document.getElementById('chart')
+        if (getDom) {
+            myChart = echarts.init(getDom);
+            drawChart()
+        }
     })
 
 
     //做一些优化,兼容打包后刷新白屏的情况，页面销毁前销毁图标示例。
-    onBeforeUnmount(()=>{
-        if(myChart) echarts.dispose(myChart)
+    onBeforeUnmount(() => {
+        if (myChart) echarts.dispose(myChart)
     })
 
     //1.监听图表跟随容器大小变化而变化，这里使用了vueuse提供的useResizeObserver方法，可以监听某一个dom大小的变化
@@ -99,7 +101,7 @@
 </script>
 
 <style scoped>
-:deep(.el-card){
-    border: none !important;
-}
+    :deep(.el-card) {
+        border: none !important;
+    }
 </style>

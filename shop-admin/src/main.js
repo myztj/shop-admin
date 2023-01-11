@@ -20,5 +20,8 @@ const app = createApp(App);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component);
 }
-app.use(router).use(store).use(ElementPlus);
+//全局引入自定义指令，用于按钮或请求权限
+import permission from '@/directives/permission.js'
+// app.use(permission)
+app.use(router).use(store).use(ElementPlus).use(permission);
 app.mount("#app");
