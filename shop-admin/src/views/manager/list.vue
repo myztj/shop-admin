@@ -14,19 +14,11 @@
                             <el-button size="small" @click="resetSearchForm">重置</el-button>
                         </span>
                     </div>
-                    <div class="flex items-center justify-between">
-                        <el-button type="primary" size="small" @click="added">新增</el-button>
-                        <el-tooltip class="box-item" effect="dark" content="刷新列表" placement="top">
-                            <el-button text @click="refreshList">
-                                <el-icon size="15">
-                                    <Refresh />
-                                </el-icon>
-                            </el-button>
-                        </el-tooltip>
-                    </div>
+                    <!-- 新增|刷新 -->
+                    <ListHeader @added="added" @refreshList="getTableData"></ListHeader>
                 </div>
             </template>
-            <el-table :data="tableData" stripe style="width: 100%">
+            <el-table :data="tableData" stripe style="width: 100%" v-loading="loading">
                 <el-table-column prop="avatar" label="管理员" width="400">
                     <template #default="{row}">
                         <div class="flex items-center">
@@ -97,6 +89,7 @@
 </template>
 
 <script setup>
+    import ListHeader from "@/components/ListHeader.vue"
     import ImageDialog from '@/components/ImageDialog.vue'
     import ZDrawer from '@/components/ZDrawer.vue'
     import anagementApi from '@/api/admin_anagement'
@@ -116,7 +109,7 @@
         resetSearchForm, 
         getTableData,
         amendAdminStatus,
-        handelDelete
+        handelDelete,
     } = useInitTable({
         //传入一个对象，第一个参数搜索栏需要的参数，第二个参数是获取数据的地址，第三个是一个回调，可以接收成功后的数据
         searchForm:{

@@ -2,16 +2,8 @@
     <div>
         <el-card shadow="never">
             <template #header>
-                <div class="flex items-center justify-between">
-                    <el-button type="primary" size="small" @click="added">新增</el-button>
-                    <el-tooltip class="box-item" effect="dark" content="刷新列表" placement="top">
-                        <el-button text size="small" @click="getTableData">
-                            <el-icon size="15">
-                                <Refresh />
-                            </el-icon>
-                        </el-button>
-                    </el-tooltip>
-                </div>
+                <!-- 新增|刷新 -->
+                <ListHeader @added="added" @refreshList="getTableData"></ListHeader>
             </template>
             <el-table :data="tableData" stripe style="width: 100%">
                 <el-table-column prop="title" label="公告标题" />
@@ -48,6 +40,7 @@
 </template>
 
 <script setup>
+    import ListHeader from "@/components/ListHeader.vue"
     import ZDrawer from '@/components/ZDrawer.vue'
     import noticeApi from '@/api/announceList'
     import { ref } from 'vue'

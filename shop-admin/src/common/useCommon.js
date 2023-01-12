@@ -30,6 +30,7 @@ export function useInitTable(options = {}) {
         limit: limit.value,
         ...searchForm,
       });
+      console.log(res);
       //如果有些数据需要在外面处理，可以会用回调的方式来处理，
       if (options.getListSuccess && typeof options.getListSuccess == "function") {
          //利用回调把成功的数据传出去！
@@ -45,16 +46,17 @@ export function useInitTable(options = {}) {
   };
       //修改管理员状态
       const amendAdminStatus = async (status, row) => {
-        row.statusLoading = true
+         row.statusLoading = true
+             
         try {
             let res = await options.updateStatusApi(row.id, { status })
             console.log(res);
             toast('状态修改成功')
             getTableData()
-            row.statusLoading = false
+              row.statusLoading = false
         } catch (error) {
             console.log(error);
-            row.statusLoading = false
+             row.statusLoading = false
             getTableData()
         }
     }
@@ -68,6 +70,7 @@ export function useInitTable(options = {}) {
             console.log(error);
         }
     }
+  getTableData()
   return {
     searchForm,
     search,
@@ -88,8 +91,6 @@ export function useInitForm(options){
     const loading = ref(false)
     let ruleForm = reactive({...options.form})
     const rules = reactive({
-        // username: [{ required: true, message: '请输入用户名', trigger: 'blur' },],
-        // status: [{ required: true, message: 'Please input Activity name', trigger: 'blur' },],
         ...options.rules
     })
 
@@ -109,6 +110,8 @@ export function useInitForm(options){
     //抽屉提交
     const ruleFormRef = ref(null)
     const onSubmit = () => {
+      console.log('表单的数据=>',ruleForm);
+      console.log(editId.value);
         ruleFormRef.value.validate(valid => {
             if (!valid) return
             loading.value = true
