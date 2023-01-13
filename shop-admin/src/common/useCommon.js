@@ -1,8 +1,11 @@
 import { reactive, ref, computed } from "vue";
 import { toast } from '@/common/promptComponent'
-//表格，分页，搜索,删除，修改状态
+//表格，分页，搜索,删除，修改状态,批量刪除
 export function useInitTable(options = {}) {
   //优化搜索表单在不同情况和不同参数的问题
+  //批量刪除需要的ID數組
+  const ids = ref([])
+  const multipleTableRef = ref(null)
   let searchForm = null;
   let resetSearchForm = null;
   if (options.searchForm) {
@@ -45,7 +48,7 @@ export function useInitTable(options = {}) {
     }
   };
       //修改管理员状态
-      const amendAdminStatus = async (status, row) => {
+      const amendAdminStatus = async (status,row) => {
          row.statusLoading = true
              
         try {
@@ -71,6 +74,26 @@ export function useInitTable(options = {}) {
         }
     }
   getTableData()
+  //表格多選按鈕狀態發生變化
+  const handleSelectionChange = (val)=>{
+    ids.value = val.map(o=>o.id)
+ }
+
+ //批量删除 
+ const handelDelete_all = async()=>{
+    if(ids.value.length==0) {
+       return toast('請選者要刪除的列表','error')
+    }
+      try {
+          let res = await options.deleteApi(ids.value)
+          toast('批量删除成功')
+          //清除多選狂狀態
+          multipleTableRef.value.clearSelection()
+          getTableData()
+      } catch (error) {
+          console.log(error);
+      }
+ }
   return {
     searchForm,
     search,
@@ -81,7 +104,10 @@ export function useInitTable(options = {}) {
     resetSearchForm,
     getTableData,
     amendAdminStatus,
-    handelDelete
+    handelDelete,
+    handleSelectionChange,
+    handelDelete_all,
+    multipleTableRef
   };
 }
 
@@ -115,7 +141,11 @@ export function useInitForm(options){
         ruleFormRef.value.validate(valid => {
             if (!valid) return
             loading.value = true
-            let func = editId.value ? options.update(editId.value, ruleForm) : options.create(ruleForm)
+            let data = {}
+            if(options.disposeFormData && typeof options.disposeFormData=='function'){
+              data = options.disposeFormData({...ruleForm})
+            }
+            let func = editId.value ? options.update(editId.value, data) : options.create(data)
             func.then(res=>{
                 toast(title.value + '成功')
                 //这里判断是添加页码就是第一页，如果是编辑就是当前页
