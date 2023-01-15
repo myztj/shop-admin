@@ -38,10 +38,11 @@ export function useInitTable(options = {}) {
       if (options.getListSuccess && typeof options.getListSuccess == "function") {
          //利用回调把成功的数据传出去！
         options.getListSuccess(res);
-        //不传回调就默认只赋值total和列表数据
       } else {
+        //不传回调就默认只赋值total和列表数据
         total.value = res.totalCount;
-        tableData.value = res.list;
+        // tableData.value = res.list;
+         tableData.value = res.list 
       }
     } catch (error) {
       console.log(error);
@@ -144,6 +145,8 @@ export function useInitForm(options){
             let data = {}
             if(options.disposeFormData && typeof options.disposeFormData=='function'){
               data = options.disposeFormData({...ruleForm})
+            }else{
+              data = ruleForm
             }
             let func = editId.value ? options.update(editId.value, data) : options.create(data)
             func.then(res=>{
