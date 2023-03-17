@@ -28,20 +28,25 @@ const updateGoods = (id,data)=>{
 }
 
 //批量上架/下架商品
-const GoodsAreOnAndOff = (data)=>{
+const GoodsAreOnAndOff = (ids,status)=>{
     return request({
         url:`/goods/changestatus`,
         method:'POST',
-        data
+        data:{
+            ids,
+            status
+        }
     })
 }
 
 //批量删除商品
-const deleteAllGoods = (data)=>{
+const deleteAllGoods = (ids)=>{
     return request({
         url:`/goods/delete_all`,
         method:'POST',
-        data
+        data:{
+            ids
+        }
     })
 }
 

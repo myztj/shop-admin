@@ -12,7 +12,7 @@ export function useInitTable(options = {}) {
     searchForm = reactive({ ...options.searchForm });
     resetSearchForm = () => {
       for (const key in options.searchForm) {
-        console.log(options.searchForm[key]);
+        // console.log(options.searchForm[key]);
         searchForm[key] = options.searchForm[key];
       }
       getTableData();
@@ -85,6 +85,7 @@ export function useInitTable(options = {}) {
     if(ids.value.length==0) {
        return toast('請選者要刪除的列表','error')
     }
+    console.log(ids.value);
       try {
           let res = await options.deleteApi(ids.value)
           toast('批量删除成功')
@@ -95,6 +96,22 @@ export function useInitTable(options = {}) {
           console.log(error);
       }
  }
+
+ //批量上架、下架
+ const handelUpdateStatus = async(status)=>{
+  if(ids.value.length==0) {
+     return toast('請選者要刪除的列表','error')
+  }
+    try {
+        let res = await options.updateStatusApi(ids.value,status)
+        toast('修改状态成功')
+        //清除多選狂狀態,
+        multipleTableRef.value.clearSelection()
+        getTableData()
+    } catch (error) {
+        console.log(error);
+    }
+}
   return {
     searchForm,
     search,
@@ -102,13 +119,15 @@ export function useInitTable(options = {}) {
     total,
     tableData,
     limit,
+    ids,
     resetSearchForm,
     getTableData,
     amendAdminStatus,
     handelDelete,
     handleSelectionChange,
     handelDelete_all,
-    multipleTableRef
+    multipleTableRef,
+    handelUpdateStatus
   };
 }
 

@@ -1,6 +1,14 @@
 <template>
-    <div class="flex items-center rounded">
-        <el-image class="h-[100px] w-[100px] pr-2" :src="modelValue" fit="cover" v-if="modelValue"></el-image>
+    <div class="flex items-center rounded flex-wrap items-center">
+        <el-image class="h-[100px] w-[100px] pr-2" :src="modelValue" fit="cover" v-if="typeof modelValue=='string'"></el-image>
+        <div class="flex flex-wrap" v-else>
+            <div class="relative h-[100px] w-[100px]  mb-2 mx-1" v-for="src in modelValue" :key="src">
+                <el-image :src="src" fit="cover" class="h-[100px] w-[100px] rounded border mr-2"></el-image>
+                <div class="absolute right-[5px] top-[0px] cursor-pointer">
+                    <el-icon @click="removeImage(src)" style="z-index: 10;" class="bg-light-50 rounded-1"><CircleClose /></el-icon>
+                </div>
+            </div>
+        </div>
     <div class="btn" @click="open">
         <el-icon :size="30" color="#ccc">
             <Plus />
@@ -14,7 +22,7 @@
                     <!-- //侧边栏 -->
                     <ImageAside ref="ImageAsideRef" @handerOnclick="handerOnclick" />
                     <!-- 主内容 -->
-                    <ImageMain @checkedImgae="checkedImgae" showChckbox ref="mainRef" />
+                    <ImageMain :limit="limit" @checkedImgae="checkedImgae" showChckbox ref="mainRef" />
                 </el-container>
             </el-container>
         </div>
@@ -33,13 +41,19 @@
     import ImageAside from '@/components/ImageAside.vue'
     import ImageMain from '@/components/ImageMain.vue'
     import { ref } from 'vue'
+    import {toast} from '@/common/promptComponent'
     const props = defineProps({
-        modelValue: [String, Array]
+        modelValue: [String, Array],
+        limit: {
+            type:Number,
+            default:1
+        }
     })
     const dialogVisible = ref(false)
     const open = () => dialogVisible.value = true
     const ImageAsideRef = ref(null)
     const mainRef = ref(null)
+    console.log(props.modelValue);
     const addImageClass = () => {
         ImageAsideRef.value.handerOpen()
     }
@@ -60,11 +74,23 @@
     }
     const emit = defineEmits(['update:modelValue'])
     const onSubmit = () => {
-        if (urls.length) {
+        let value = []
+        if(props.limit>1){
+            value = [...urls,...props.modelValue]
+            if (value.length >props.limit ) {
+                return toast('最多只可以上传'+(props.limit-props.modelValue.length)+'张')
+            }
+        }else{
+            value = urls[0]
+        }
+        if (value) {
             console.log(123);
-            emit('update:modelValue', urls[0])
+            emit('update:modelValue', value)
             dialogVisible.value=false 
         }
+    }
+    const removeImage = (src)=>{
+        emit('update:modelValue',props.modelValue.filter(url=>url!=src))
     }
 </script>
 

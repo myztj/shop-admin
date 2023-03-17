@@ -2,18 +2,13 @@
     <div>
         <el-card shadow="never">
             <template #header>
+                <!-- 搜索 -->
                 <div>
-                    <div class="flex justify-between mb-2">
-                        <el-form :model="searchForm" label-width="80px" size="small" style="width:500px">
-                            <el-form-item label="关键词">
-                                <el-input v-model="searchForm.keyword" clearable placeholder="管理员昵称" />
-                            </el-form-item>
-                        </el-form>
-                        <span>
-                            <el-button type="primary" size="small" @click="search">搜索</el-button>
-                            <el-button size="small" @click="resetSearchForm">重置</el-button>
-                        </span>
-                    </div>
+                    <Search @search="search" @resetSearchForm="resetSearchForm">
+                        <SearchItem label="关键词">
+                            <el-input v-model="searchForm.keyword" clearable placeholder="管理员昵称" />
+                        </SearchItem>
+                    </Search>
                     <!-- 新增|刷新 -->
                     <ListHeader @added="added" @refreshList="getTableData"></ListHeader>
                 </div>
@@ -89,6 +84,8 @@
 </template>
 
 <script setup>
+     import Search from '@/components/Search.vue'
+    import SearchItem from '@/components/SearchItem.vue'
     import ListHeader from "@/components/ListHeader.vue"
     import ImageDialog from '@/components/ImageDialog.vue'
     import ZDrawer from '@/components/ZDrawer.vue'

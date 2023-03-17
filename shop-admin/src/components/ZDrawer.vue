@@ -68,7 +68,10 @@
     //提交事件
     const onSubmit = ()=> emit('onSubmit')
     //取消事件
-    const cancel = ()=>emit('cancel')
+    const cancel = ()=>{
+        close()
+        emit('cancel')
+    }
     //抽屉关闭的回调
     const handelClose = ()=> emit('handelClose')
     defineExpose({
